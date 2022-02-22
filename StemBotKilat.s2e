@@ -1,0 +1,295 @@
+{	"extensionName": "StemBot_TraceDelay",
+	"description": "Line tracer program provided by RS Technologies for Stembot Kilat line following robot.",
+	"version": "1.0",
+	"author": "Mok Ren Hao (www.facebook.com/MokRenHao)",
+	"homepage": "www.facebook.com/robosocietypahang/",
+	"sort":0,
+	"javascriptURL":"",
+    "firmware":"1.0",
+    "extensionPort":0,
+	"blockSpecs": [
+		[
+			"h",
+			"StemBot Kilat TD",
+			"runArduino",			
+			{				
+				"inc": "",
+				"def": "",
+				"setup":"",
+				"work": "",
+				"loop": ""
+			}
+		],
+		
+		[
+			"w",
+			"Version COMEL",
+			"version comel",	
+            "",		
+			{				
+				"inc": "",
+				"def": "#define OLED\n#include \"StemBot2019_smd.h\"\n",
+				"setup":"",
+				"work": "",
+				"loop": ""
+			}
+		],
+		
+		[
+			"w",
+			"Version SMD",
+			"version smd",	
+            "",		
+			{				
+				"inc": "",
+				"def": "#define OLED\n#include \"StemBot2019_smd.h\"\n",
+				"setup":"",
+				"work": "",
+				"loop": ""
+			}
+		],
+		
+		[
+			"w",
+			"Version Through-hole",
+			"version th",	
+			"",
+			{				
+				"inc": "",
+				"def": "#define OLED\n#include \"StemBot2019_th.h\"\n",
+				"setup":"",
+				"work": "",
+				"loop": ""
+			}
+		],
+		
+		[
+			"w",
+			"Setup | Calibrate IR %m.caltime",
+			"setup",
+			"Manual","400",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"bot_setup({0},{1});\n",
+				"work":"",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Rename BT to %s || Check name %m.yes_no",
+			"rename",
+			"StemBot","No",
+			{				
+				"inc":"",
+				"def":"#include \"bluetooth.h\"\n",
+				"setup":"bt_setup();\nrename_bt({0},{1});\n",
+				"work":"",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Alignment %n || Inverted direction | Left %m.yes_no Right %m.yes_no || Test %m.yes_no",
+			"Alignment",
+			"0","No","No","No","No",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"alignment({0}, {1}, {2}, {3});\n",
+				"work":"",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"LED | Red %m.ONOFF Yellow %m.ONOFF Green %m.ONOFF",
+			"LED",
+			"OFF","OFF","OFF",
+			{
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"LED({0}, {1}, {2});\n",
+				"loop":""
+			}
+		],	
+		
+		[
+			"w",
+			"Set_gain | Kp %n Kd %n",
+			"Gains",
+			"0.15","-5",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"KP = {0}, KD = {1};\n",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Path | LineColor %m.lineColor Speed %n Trace_back %n Trace_delay %n Junction %m.type Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
+			"path",
+			"black","255","25","100","Follow Line","Go Straight","-1","0","0","0",
+		    {			    
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"junction({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {9}, {0}, {10});\n",
+				"loop":""
+		    }
+		],
+		
+		[
+			"w",
+			"Obstacle | LineColor %m.lineColor Speed %n Trace_back %n Distance_mm %n Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
+			"Obstacle",
+			"black","255","100","100","Go Straight","0","100","200","0",
+		    {			    
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"obstacle({1}, {2}, {3}, {4}, {5}, {6}, {7}, {0}, {8});\n",
+				"loop":""
+		    }
+		],
+		
+		[
+			"w",
+			"back to line | LineColor %m.lineColor SpeedL %n SpeedR %n OffsetIR %n",
+			"Back to line",
+			"black","255","255","0",
+		    {			    
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"back_to_line({1}, {2}, {0}, {3});\n",
+				"loop":""
+		    }
+		],
+		
+		[
+			"R",
+			"Get from BT || Diaplay char %m.yes_no",
+			"Get from BT",
+			"No",
+			{				
+				"inc":"",
+				"def":"#include \"bluetooth.h\"\n",
+				"setup":"bt_setup();\n",
+				"work":"BT_receiver({0})",
+				"loop":""
+			}
+		],
+			
+		[
+			"w",
+			"Forward | Left %n Right %n",
+			"forward",
+			"200", "200",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"forward({0}, {1});\n",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Backward | Left %n Right %n",
+			"backward",
+			"200", "200",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"backward({0}, {1});\n",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Turn Left | Left %n Right %n",
+			"turn_left",
+			"200", "200",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"turnLeft({0}, {1});\n",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Turn Right | Left %n Right %n",
+			"turn_right",
+			"200", "200",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"turnRight({0}, {1});\n",
+				"loop":""
+			}
+		],
+			
+		[
+			"w",
+			"Stop",
+			"stop",
+			"",
+			{				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"Stop();\n",
+				"loop":""
+			}
+		],
+		
+		[
+			"w",
+			"Display finish time | Display Flip %m.yes_no",
+			"display",
+			"No",
+			{
+				
+				"inc":"",
+				"def":"",
+				"setup":"",
+				"work":"display_finishTime({0});\n",
+				"loop":""
+			}
+		]
+		
+	],
+	"menus": {
+		"action":["Turn Left","Turn Right","Go Straight"],
+		"caltime":["Skip","Auto 1.0 Second","Auto 1.5 Seconds","Auto 2.0 Seconds"],
+		"lineColor":["black","white"],
+		"ONOFF":["ON","OFF"],
+		"type":["Left","Middle","Right", "Follow Line"],
+		"yes_no":["Yes","No"],
+	},
+	"values":{
+		"Yes":1,"No":0,
+		"ON":1,"OFF":0,
+		"Skip":0,"Auto 1.0 Second":10,"Auto 1.5 Seconds":15,"Auto 2.0 Seconds":20,
+	        "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Go Straight":33,
+		"black":1, "white":0
+	},
+	"translators":{
+	}
+}
