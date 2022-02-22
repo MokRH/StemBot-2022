@@ -1,4 +1,6 @@
-# StemBot-2019 / Kilat Comel
+# StemBot-2022 / Kilat Comel
+Changelog
+1. trace delay added
 
 # Installation guide
 1. Download the StemBot-2019 library.
