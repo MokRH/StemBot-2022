@@ -239,7 +239,8 @@ void followLine(int speedL, int speedR) {
   else if (outputVal < 0) { // line is on the RIGHT of robot
     forward(speedL, speedR + outputVal);
   }
-  LED(0, 1, 0);
+  //LED(0, 1, 0);
+  LED(0, 0, 0);
 }
 
 void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action, int delay_b4_turn, int turn_speed, int turn_duration, int line, int offsetIR) {
@@ -249,26 +250,31 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
   do {
     update_sensor(line, offsetIR);
     if ( (IRval & 0b00011111) != 0b00000000 ) { // robot is ON line
-      IR_position = (bitRead(IRval, 4) * 0 + bitRead(IRval, 3) * 500 + bitRead(IRval, 2) * 1000 + bitRead(IRval, 1) * 1500 + bitRead(IRval, 0) * 2000) / (bitRead(IRval, 4) + bitRead(IRval, 3) + bitRead(IRval, 2) + bitRead(IRval, 1) + bitRead(IRval, 0));
+	trackLine:
+      IR_position = ( bitRead(IRval, 4) * 0 + bitRead(IRval, 3) * 500 + bitRead(IRval, 2) * 1000 + bitRead(IRval, 1) * 1500 + bitRead(IRval, 0) * 2000 ) / ( bitRead(IRval, 4) + bitRead(IRval, 3) + bitRead(IRval, 2) + bitRead(IRval, 1) + bitRead(IRval, 0) );
       followLine(speed_M, speed_M);
-      //if (IRval == 0b00011110 || IRval == 0b00011100 || IRval == 0b00011010 || IRval == 0b00010110 || IRval == 0b00010100 || IRval == 0b00010010) { // Left junction
-      if ( bitRead(IRval, 4) == 1 && bitRead(IRval, 0) != 1 && (bitRead(IRval, 2) == 1 || bitRead(IRval, 1) == 1) ) { // Left junction (Karnaugh map)
+	  
+	  // Left junction 
+      if ( (IRval & 0b00010111) == 0b00010100 )  { // Left junction 	  
         if (TYPE == 1 && action == 11 ) { // Left junction, turn left
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint - 100;
-          break;
+		  IR_position = setPoint - 100;
+		  break;
         }
         else if (TYPE == 1 && action == 22 ) { // left junction, turn right
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint + 100;
-          break;
+		  IR_position = setPoint + 100;
+		  break;
         }
         else if (TYPE == 1 && action == 33 ) { // left junction, ignore
-          while ( bitRead(IRval, 4) == 1 && bitRead(IRval, 0) != 1 && (bitRead(IRval, 2) == 1 || bitRead(IRval, 1) == 1) ) {
+		LED(1, 1, 1);
+          while ( (IRval & 0b00010111) == 0b00010100 ) {
             update_sensor(line, offsetIR);
             IR_position = (bitRead(IRval, 4) * 0 + bitRead(IRval, 3) * 500 + bitRead(IRval, 2) * 1000 + bitRead(IRval, 1) * 1500 + bitRead(IRval, 0) * 2000) / (bitRead(IRval, 4) + bitRead(IRval, 3) + bitRead(IRval, 2) + bitRead(IRval, 1) + bitRead(IRval, 0));
             followLine(speed_M, speed_M);
@@ -276,25 +282,28 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           break;
         }
       }
-
-      //else if (IRval == 0b00011111 || IRval == 0b00011101 || IRval == 0b00011011 || IRval == 0b00011001 || IRval == 0b00010111 || IRval == 0b00010101 || IRval == 0b00010011 || IRval == 0b00010001 || IRval == 0b00001110 || IRval == 0b00001010) { // Middle junction
-      else if ( (bitRead(IRval, 4) == 1 && bitRead(IRval, 0) == 1) || (bitRead(IRval, 4) != 1 && bitRead(IRval, 3) == 1 && bitRead(IRval, 1) == 1 && bitRead(IRval, 0) != 1) ) { // Middle junction (Karnaugh map)
+      
+	  // Middle junction 
+      else if ( (IRval & 0b00010001) == 0b00010001 ) { // Middle junction
         if (TYPE == 3 && action == 11 ) { // Middle junction, turn left
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint - 100;
-          break;
+		  IR_position = setPoint - 100;
+		  break;
         }
         else if (TYPE == 3 && action == 22 ) { // Middle junction, turn right
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint + 100;
-          break;
+		  IR_position = setPoint + 100;
+		  break;
         }
         else if (TYPE == 3 && action == 33 ) { // Middle junction, ignore
-          while ( (bitRead(IRval, 4) == 1 && bitRead(IRval, 0) == 1) || (bitRead(IRval, 4) != 1 && bitRead(IRval, 3) == 1 && bitRead(IRval, 1) == 1 && bitRead(IRval, 0) != 1) ) {
+		LED(1, 1, 1);
+          while ( (IRval & 0b00010001) == 0b00010001 ) {
             update_sensor(line, offsetIR);
             IR_position = (bitRead(IRval, 4) * 0 + bitRead(IRval, 3) * 500 + bitRead(IRval, 2) * 1000 + bitRead(IRval, 1) * 1500 + bitRead(IRval, 0) * 2000) / (bitRead(IRval, 4) + bitRead(IRval, 3) + bitRead(IRval, 2) + bitRead(IRval, 1) + bitRead(IRval, 0));
             followLine(speed_M, speed_M);
@@ -303,24 +312,27 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
         }
       }
 
-      //else if (IRval == 0b00001111 || IRval == 0b00001101 || IRval == 0b00001011 || IRval == 0b00001001 || IRval == 0b00000111 || IRval == 0b00000101) { // Right junction
-      else if ( bitRead(IRval, 4) != 1 && bitRead(IRval, 0) == 1 && (bitRead(IRval, 3) == 1 || bitRead(IRval, 2) == 1) ) { // Right junction (Karnaugh map)
+      // Right junction
+      else if ( (IRval & 0b00011101) == 0b00000101 )  { // Right junction
         if (TYPE == 2 && action == 11) { // Right junction, turn left
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint - 100;
-          break;
+		  IR_position = setPoint - 100;
+		  break;
         }
         else if (TYPE == 2 && action == 22 ) { // Right junction, turn right
+		LED(1, 1, 1);
           delay(delay_b4_turn);
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
-          IR_position = setPoint + 100;
-          break;
+		  IR_position = setPoint + 100;
+		  break;
         }
         else if (TYPE == 2 && action == 33 ) { // Right junction, ignore
-          while ( bitRead(IRval, 4) != 1 && bitRead(IRval, 0) == 1 && (bitRead(IRval, 3) == 1 || bitRead(IRval, 2) == 1) ) {
+		LED(1, 1, 1);
+          while ( (IRval & 0b00011101) == 0b00000101 ) {
             update_sensor(line, offsetIR);
             IR_position = (bitRead(IRval, 4) * 0 + bitRead(IRval, 3) * 500 + bitRead(IRval, 2) * 1000 + bitRead(IRval, 1) * 1500 + bitRead(IRval, 0) * 2000) / (bitRead(IRval, 4) + bitRead(IRval, 3) + bitRead(IRval, 2) + bitRead(IRval, 1) + bitRead(IRval, 0));
             followLine(speed_M, speed_M);
@@ -331,6 +343,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
 
       else if (TYPE == 4 && action == 11) { // dont care, turn left
         if (countIgnore == delay_b4_turn) {
+		LED(1, 1, 1);
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
           IR_position = setPoint - 100;
@@ -340,6 +353,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
       }
       else if (TYPE == 4 && action == 22) { // dont care, turn right
         if (countIgnore == delay_b4_turn) {
+		LED(1, 1, 1);
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
           IR_position = setPoint + 100;
@@ -348,10 +362,10 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
         countIgnore += 1;
       }
       else if (TYPE == 4 && action == 33 && delay_b4_turn != -1) { // dont care, ignore
-        if (countIgnore == delay_b4_turn) {
+        countIgnore += 1;
+		if (countIgnore == delay_b4_turn) {
           break;
         }
-        countIgnore += 1;
       }
       else if (TYPE == 4 && action == 33 && delay_b4_turn == -1) { // dont care, loop forever
         // loop forever
@@ -363,11 +377,11 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
         countTrace++;
         update_sensor(line, offsetIR);
         if ( (IRval & 0b00011111) != 0b00000000 )
-          break;
+          goto trackLine;
       }
       if (countTrace >= trace_delay) {
         if (IR_position < setPoint) { // last position is on the LEFT before lost
-          LED(0, 0, 1);
+          //LED(0, 0, 1);
           if (trace_back != 0) {
             turnLeft(trace_back, trace_back);
             //while ( (IRval & 0b00011000) == 0b00000000 )
@@ -377,7 +391,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
             forward(0, speed_M);
         }
         else if (IR_position == setPoint) { // last position is on the LEFT before lost
-          LED(0, 0, 1);
+          //LED(0, 0, 1);
           if (trace_back != 0) {
             turnLeft(trace_back, trace_back);
             //while ( (IRval & 0b00011000) == 0b00000000 )
@@ -387,7 +401,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
             forward(speed_M, speed_M);
         }
         else { // last position is on the RIGHT before lost
-          LED(1, 0, 0);
+          //LED(1, 0, 0);
           if (trace_back != 0) {
             turnRight(trace_back, trace_back);
             //while ( (IRval & 0b00000011) == 0b00000000 )
