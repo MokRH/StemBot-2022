@@ -37,8 +37,8 @@
 		
 		[
 			"w",
-			"Version SMD",
-			"version smd",	
+			"Version 2019",
+			"version 2019",	
             "",		
 			{				
 				"inc": "",
@@ -51,8 +51,8 @@
 		
 		[
 			"w",
-			"Version Through-hole",
-			"version th",	
+			"Version 2018",
+			"version 2018",	
 			"",
 			{				
 				"inc": "",
@@ -67,7 +67,7 @@
 			"w",
 			"Setup | Calibrate IR %m.caltime",
 			"setup",
-			"Manual","400",
+			"Auto 1.0 Second","400",
 			{				
 				"inc":"",
 				"def":"",
@@ -123,7 +123,7 @@
 			"w",
 			"Set_gain | Kp %n Kd %n",
 			"Gains",
-			"0.15","-5",
+			"0.15","-1.5",
 			{				
 				"inc":"",
 				"def":"",
@@ -135,9 +135,9 @@
 		
 		[
 			"w",
-			"Path | LineColor %m.lineColor Speed %n Trace_back %n Trace_delay %n Junction %m.type Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
+			"Path | LineColor %m.lineColor Speed %n Trace_back %n Dash_line %m.tb Junction %m.type Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
 			"path",
-			"black","200","200","25","Follow Line","Go Straight","-1","0","0","0",
+			"black","200","150","No","Follow Line","Go Straight","-1","150","0","0",
 		    {			    
 				"inc":"",
 				"def":"",
@@ -276,10 +276,11 @@
 		
 	],
 	"menus": {
-		"action":["Turn Left","Turn Right","Go Straight"],
+		"action":["Turn Left","Turn Right","Go Straight"],
 		"caltime":["Skip","Auto 1.0 Second","Auto 1.5 Seconds","Auto 2.0 Seconds"],
 		"lineColor":["black","white"],
 		"ONOFF":["ON","OFF"],
+		"tb":["No","Gap 1","Gap 2","Gap 3","Gap 4","Gap 5","Gap 6","Gap 7"],
 		"type":["Left","Middle","Right", "Follow Line"],
 		"yes_no":["Yes","No"],
 	},
@@ -287,8 +288,9 @@
 		"Yes":1,"No":0,
 		"ON":1,"OFF":0,
 		"Skip":0,"Auto 1.0 Second":10,"Auto 1.5 Seconds":15,"Auto 2.0 Seconds":20,
-	        "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Go Straight":33,
-		"black":1, "white":0
+	        "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Go Straight":33,
+		"black":1, "white":0,
+		"Gap 1":20,"Gap 2":40,"Gap 3":60,"Gap 4":80,"Gap 5":100,"Gap 6":120,"Gap 7":140
 	},
 	"translators":{
 	}
