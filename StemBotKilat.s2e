@@ -123,7 +123,7 @@
 			"w",
 			"Set_gain | Kp %n Kd %n",
 			"Gains",
-			"0.15","-1.5",
+			"0.2","-2.0",
 			{				
 				"inc":"",
 				"def":"",
@@ -135,14 +135,14 @@
 		
 		[
 			"w",
-			"Path | LineColor %m.lineColor Speed %n Trace_back %n Dash_line %m.tb Junction %m.type Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
+			"Path | LineColor %m.lineColor - - - %m.gap Speed %n Junction %m.type Action %m.action TurnDelay %n TurnSpd %n TurnDuration %m.duration OffsetIR %n",
 			"path",
-			"black","200","150","No","Follow Line","Go Straight","-1","150","0","0",
+			"black","Gap 4","150","Skip","Forward","-1","150","0","0",
 		    {			    
 				"inc":"",
 				"def":"",
 				"setup":"",
-				"work":"junction({1}, {2}, {3}, {4}, {5}, {6}, {7}, {8}, {0}, {9});\n",
+				"work":"junction({2}, 1, {1}, {3}, {4}, {5}, {6}, {7}, {0}, {8});\n",
 				"loop":""
 		    }
 		],
@@ -276,21 +276,24 @@
 		
 	],
 	"menus": {
-		"action":["Turn Left","Turn Right","Go Straight"],
+		"action":["Turn Left","Turn Right","Forward"],
 		"caltime":["Skip","Auto 1.0 Second","Auto 1.5 Seconds","Auto 2.0 Seconds"],
+		"dir":["Left","Right"],
+		"duration":["100","120","140","160","180","200","220","240","260","280","300"],
 		"lineColor":["black","white"],
 		"ONOFF":["ON","OFF"],
-		"tb":["No","Gap 1","Gap 2","Gap 3","Gap 4","Gap 5","Gap 6","Gap 7"],
-		"type":["Left","Middle","Right", "Follow Line"],
+		"gap":["No","Gap Distance 1","Gap Distance 2","Gap Distance 3","Gap Distance 4","Gap Distance 5","Gap Distance 6","Gap Distance 7"],
+		"type":["Left","Middle","Right", "Skip"],
 		"yes_no":["Yes","No"],
 	},
 	"values":{
 		"Yes":1,"No":0,
 		"ON":1,"OFF":0,
-		"Skip":0,"Auto 1.0 Second":10,"Auto 1.5 Seconds":15,"Auto 2.0 Seconds":20,
-	        "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Go Straight":33,
 		"black":1, "white":0,
-		"Gap 1":20,"Gap 2":40,"Gap 3":60,"Gap 4":80,"Gap 5":100,"Gap 6":120,"Gap 7":140
+		"Skip":0,"Auto 1.0 Second":10,"Auto 1.5 Seconds":15,"Auto 2.0 Seconds":20,
+		"Gap Distance 1":20,"Gap Distance 2":40,"Gap Distance 3":60,"Gap Distance 4":80,"Gap Distance 5":100,"Gap Distance 6":120,"Gap Distance 7":140,
+	    "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Forward":33,		
+		"100":100,"120":120,"140":140,"160":160,"180":180,"200":200,"220":220,"240":240,"260":260,"280":280,"300":300
 	},
 	"translators":{
 	}
