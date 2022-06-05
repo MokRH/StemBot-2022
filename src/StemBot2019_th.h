@@ -217,12 +217,13 @@ double pid(double _setpoint, double _input, int min_out, int max_out) {
   previous_time = current_time;
 
   _error = _setpoint - _input;
-  int_error += _error * (elapsed_time);
-  int_error = constrain(int_error, -1000, 1000);
+  //int_error += _error * (elapsed_time);
+  //int_error = constrain(int_error, -1000, 1000);
   rate_error = (_error - last_error) / (elapsed_time);
   last_error = _error;
 
-  double _output = KP * _error + KI * int_error + KD * rate_error;
+  //double _output = KP * _error + KI * int_error + KD * rate_error;
+  double _output = KP * _error - KD * rate_error;
   return ( constrain(_output, out_min, out_max) );
 }
 
@@ -510,27 +511,27 @@ void bot_setup(int calibrate_time, int manual_value) {
     battVolt += analogRead(battMon_pin) * 5.00 / 1023.00;
 	delay(10);
   }
-  int battPercent = (battVolt-276) / (297-276) * 100;
+  int battPercent = (battVolt-280) / (296-280) * 100;
   battPercent = constrain(battPercent, 0, 99);
   char c_battPercent[9];
   ("  " + String(battPercent) + "%   ").toCharArray(c_battPercent, 9);
   digitalWrite(battMon_en, LOW);
    
-  if (battPercent > 80) {
+  if (battPercent > 70) {
 #ifdef OLED
     u8x8.drawString(0, 4, c_battPercent);
     u8x8.drawString(0, 6, "  Full  ");
 #endif
     LED(0, 0, 1);
   }
-  else if (battPercent <= 80 && battPercent > 30) {
+  else if (battPercent <= 70 && battPercent > 50) {
 #ifdef OLED
     u8x8.drawString(0, 4, c_battPercent);
     u8x8.drawString(0, 6, "  Good  ");
 #endif
     LED(0, 1, 0);
   }
-  else if (battPercent <= 30 && battPercent > 10) {
+  else if (battPercent <= 50 && battPercent > 30) {
 #ifdef OLED
     u8x8.drawString(0, 4, c_battPercent);
     u8x8.drawString(0, 6, "  LOW!  ");
@@ -539,8 +540,8 @@ void bot_setup(int calibrate_time, int manual_value) {
   }
   else {
 #ifdef OLED
-    u8x8.drawString(0, 4, "   0%   ");
-    u8x8.drawString(0, 6, " EMPTY! ");
+    u8x8.drawString(0, 4, " PLEASE ");
+    u8x8.drawString(0, 6, " CHANGE ");
 #endif
     while (1) {
       LED(1, 0, 0);
