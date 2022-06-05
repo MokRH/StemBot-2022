@@ -511,12 +511,12 @@ void bot_setup(int calibrate_time, int manual_value) {
     battVolt += analogRead(battMon_pin) * 5.00 / 1023.00;
 	delay(10);
   }
-  int battPercent = (battVolt-280) / (296-280) * 100;
+  int battPercent = (battVolt-282) / (296-282) * 100;
   battPercent = constrain(battPercent, 0, 99);
   char c_battPercent[9];
   ("  " + String(battPercent) + "%   ").toCharArray(c_battPercent, 9);
   digitalWrite(battMon_en, LOW);
-   
+	
   if (battPercent > 70) {
 #ifdef OLED
     u8x8.drawString(0, 4, c_battPercent);
