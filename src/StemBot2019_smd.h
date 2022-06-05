@@ -197,8 +197,8 @@ void calibrateIR(int i, int man_value) {
   }
 }
 
-const int8_t blackLine = 1, whiteLine = 0;
 byte IRval = 0b00000000;
+const int8_t blackLine = 1, whiteLine = 0;
 void update_sensor(int8_t line, int offsetIR) {
   if (analogRead(IR1) < IR1_avg + offsetIR) IRval = IRval | 0b00010000;
   else IRval = IRval & 0b11101111;
