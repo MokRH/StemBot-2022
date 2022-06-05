@@ -506,7 +506,7 @@ void bot_setup(int calibrate_time, int manual_value) {
 
   //****************** check battery ******************//
 #ifdef OLED
-  u8x8.drawString(0, 0, " BATERY ");
+  u8x8.drawString(0, 0, "BATTERY ");
   u8x8.drawString(0, 2, "        ");
   u8x8.drawString(0, 4, "CHECKING");
   u8x8.drawString(0, 6, "        ");
