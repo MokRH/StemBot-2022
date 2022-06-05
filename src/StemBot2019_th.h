@@ -191,8 +191,8 @@ void calibrateIR(int i, int man_value) {
   }
 }
 
-const int8_t blackLine = 1, whiteLine = 0;
 byte IRval = 0b00000000;
+const int8_t blackLine = 1, whiteLine = 0;
 void update_sensor(int8_t line, int offsetIR) {
   if (analogRead(IR1) < IR1_avg + offsetIR) IRval = IRval | 0b00010000;
   else IRval = IRval & 0b11101111;
@@ -240,7 +240,6 @@ void followLine(int speedL, int speedR) {
     forward(speedL, speedR + outputVal);
   }
   //LED(0, 1, 0);
-  LED(0, 0, 0);
 }
 
 void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action, int delay_b4_turn, int turn_speed, int turn_duration, int line, int offsetIR) {
@@ -263,6 +262,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint - 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 1 && action == 22 ) { // left junction, turn right
@@ -272,6 +272,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint + 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 1 && action == 33 ) { // left junction, ignore
@@ -293,6 +294,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint - 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 3 && action == 22 ) { // Middle junction, turn right
@@ -302,6 +304,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint + 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 3 && action == 33 ) { // Middle junction, ignore
@@ -323,6 +326,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint - 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 2 && action == 22 ) { // Right junction, turn right
@@ -332,6 +336,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
 		  IR_position = setPoint + 100;
+		  LED(0, 0, 0);
 		  break;
         }
         else if (TYPE == 2 && action == 33 ) { // Right junction, ignore
@@ -350,6 +355,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnLeft(turn_speed, turn_speed);
           delay(turn_duration);
           IR_position = setPoint - 100;
+		  LED(0, 0, 0);
           break;
         }
         countIgnore += 1;
@@ -360,6 +366,7 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
           turnRight(turn_speed, turn_speed);
           delay(turn_duration);
           IR_position = setPoint + 100;
+		  LED(0, 0, 0);
           break;
         }
         countIgnore += 1;
@@ -497,15 +504,18 @@ void bot_setup(int calibrate_time, int manual_value) {
   u8x8.drawString(0, 4, "CHECKING");
   u8x8.drawString(0, 6, "        ");
 #endif
+  delay(100);
   float battVolt = 0;
   for (int i = 0; i < 100; i++) {
-    battVolt += analogRead(battMon_pin) * 2.89 * 5.00 / 1023.00;
+    battVolt += analogRead(battMon_pin) * 5.00 / 1023.00;
+	delay(10);
   }
-  int8_t battPercent = (battVolt - 660) / (840 - 660) * 100;
+  int battPercent = (battVolt-276) / (297-276) * 100;
   battPercent = constrain(battPercent, 0, 99);
   char c_battPercent[9];
   ("  " + String(battPercent) + "%   ").toCharArray(c_battPercent, 9);
-
+  digitalWrite(battMon_en, LOW);
+   
   if (battPercent > 80) {
 #ifdef OLED
     u8x8.drawString(0, 4, c_battPercent);
