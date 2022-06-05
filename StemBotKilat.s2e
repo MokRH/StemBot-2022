@@ -67,11 +67,11 @@
 			"w",
 			"Setup | Calibrate IR %m.caltime",
 			"setup",
-			"Auto 1.0 Second","400",
+			"Auto 1.0 Second",
 			{				
 				"inc":"",
 				"def":"",
-				"setup":"bot_setup({0},{1});\n",
+				"setup":"bot_setup({0},400);\n",
 				"work":"",
 				"loop":""
 			}
