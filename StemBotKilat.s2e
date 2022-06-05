@@ -79,20 +79,6 @@
 		
 		[
 			"w",
-			"Rename BT to %s || Check name %m.yes_no",
-			"rename",
-			"StemBot","No",
-			{				
-				"inc":"",
-				"def":"#include \"bluetooth.h\"\n",
-				"setup":"bt_setup();\nrename_bt({0},{1});\n",
-				"work":"",
-				"loop":""
-			}
-		],
-		
-		[
-			"w",
 			"Alignment %n || Inverted direction | Left %m.yes_no Right %m.yes_no || Test %m.yes_no",
 			"Alignment",
 			"0","No","No","No","No",
@@ -104,20 +90,6 @@
 				"loop":""
 			}
 		],
-		
-		[
-			"w",
-			"LED | Red %m.ONOFF Yellow %m.ONOFF Green %m.ONOFF",
-			"LED",
-			"OFF","OFF","OFF",
-			{
-				"inc":"",
-				"def":"",
-				"setup":"",
-				"work":"LED({0}, {1}, {2});\n",
-				"loop":""
-			}
-		],	
 		
 		[
 			"w",
@@ -149,46 +121,33 @@
 		
 		[
 			"w",
-			"Obstacle | LineColor %m.lineColor Speed %n Trace_back %n Distance_mm %n Action %m.action DelayB4Turn %n TurnSpd %n TurnDuration %n OffsetIR %n",
-			"Obstacle",
-			"black","255","100","100","Go Straight","0","100","200","0",
-		    {			    
+			"Stop",
+			"stop",
+			"",
+			{				
 				"inc":"",
 				"def":"",
 				"setup":"",
-				"work":"obstacle({1}, {2}, {3}, {4}, {5}, {6}, {7}, {0}, {8});\n",
+				"work":"Stop();\n",
 				"loop":""
-		    }
+			}
 		],
 		
 		[
 			"w",
-			"back to line | LineColor %m.lineColor SpeedL %n SpeedR %n OffsetIR %n",
-			"Back to line",
-			"black","255","255","0",
-		    {			    
+			"Display finish time | Display Flip %m.yes_no",
+			"display",
+			"No",
+			{
+				
 				"inc":"",
 				"def":"",
 				"setup":"",
-				"work":"back_to_line({1}, {2}, {0}, {3});\n",
-				"loop":""
-		    }
-		],
-		
-		[
-			"R",
-			"Get from BT || Diaplay char %m.yes_no",
-			"Get from BT",
-			"No",
-			{				
-				"inc":"",
-				"def":"#include \"bluetooth.h\"\n",
-				"setup":"bt_setup();\n",
-				"work":"BT_receiver({0})",
+				"work":"display_finishTime({0});\n",
 				"loop":""
 			}
 		],
-			
+
 		[
 			"w",
 			"Forward | Left %n Right %n",
@@ -244,35 +203,48 @@
 				"loop":""
 			}
 		],
-			
+		
 		[
 			"w",
-			"Stop",
-			"stop",
-			"",
-			{				
+			"LED | Red %m.ONOFF Yellow %m.ONOFF Green %m.ONOFF",
+			"LED",
+			"OFF","OFF","OFF",
+			{
 				"inc":"",
 				"def":"",
 				"setup":"",
-				"work":"Stop();\n",
+				"work":"LED({0}, {1}, {2});\n",
+				"loop":""
+			}
+		],	
+		
+		[
+			"w",
+			"Rename BT to %s || Check name %m.yes_no",
+			"rename",
+			"StemBot","No",
+			{				
+				"inc":"",
+				"def":"#include \"bluetooth.h\"\n",
+				"setup":"bt_setup();\nrename_bt({0},{1});\n",
+				"work":"",
 				"loop":""
 			}
 		],
 		
 		[
-			"w",
-			"Display finish time | Display Flip %m.yes_no",
-			"display",
+			"R",
+			"Get from BT || Diaplay char %m.yes_no",
+			"Get from BT",
 			"No",
-			{
-				
+			{				
 				"inc":"",
-				"def":"",
-				"setup":"",
-				"work":"display_finishTime({0});\n",
+				"def":"#include \"bluetooth.h\"\n",
+				"setup":"bt_setup();\n",
+				"work":"BT_receiver({0})",
 				"loop":""
 			}
-		]
+		],
 		
 	],
 	"menus": {
@@ -285,7 +257,7 @@
 		"ONOFF":["ON","OFF"],
 		"gap":["No","Gap Level 1","Gap Level 2","Gap Level 3","Gap Level 4","Gap Level 5","Gap Level 6","Gap Level 7"],
 		"type":["Left","Middle","Right", "Skip"],
-		"yes_no":["Yes","No"],		
+		"yes_no":["Yes","No"],
 	},
 	"values":{
 		"Yes":1,"No":0,
@@ -295,7 +267,7 @@
 		"Gap Level 1":20,"Gap Level 2":40,"Gap Level 3":60,"Gap Level 4":80,"Gap Level 5":100,"Gap Level 6":120,"Gap Level 7":140,
 	    "Left":1,"Right":2,"Middle":3,"Follow Line":4,"Turn Left":11,"Turn Right":22,"Forward":33,		
 		"100":100,"120":120,"140":140,"160":160,"180":180,"200":200,"220":220,"240":240,"260":260,"280":280,"300":300,
-		"Weakest":0.1,"Weaker":0.15,"Normal":0.2,"Stronger":0.25,"Strongest":0.3
+		"Weakest":0.1,"Weaker":0.15,"Normal":0.2,"Stronger":0.25,"Strongest":0.3,
 	},
 	"translators":{
 	}
