@@ -293,7 +293,8 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
       }
       
 	  // Middle junction 
-	else if ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) { // Middle junction
+	//else if ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) { // Middle junction
+	else if ( (IRval & 0b00010101) == 0b00010101 ) {
         if (TYPE == 3 && action == 11 ) { // Middle junction, turn left
 		LED(0, 0, 1);
 		  forward(speed_M, speed_M);
@@ -317,8 +318,9 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
         else if (TYPE == 3 && action == 33 ) { // Middle junction, ignore
 		LED(1, 1, 1);
 		followLine(speed_M, speed_M);
-          while ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) {
-            update_sensor(line, offsetIR);
+          //while ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) {
+          while ( (IRval & 0b00010101) == 0b00010101 ){
+			update_sensor(line, offsetIR);
           }
           break;
         }
@@ -517,7 +519,7 @@ void bot_setup(int calibrate_time, int manual_value) {
     battVolt += analogRead(battMon_pin) * 5.00 / 1023.00;
 	delay(10);
   }
-  int battPercent = (battVolt-280) / (296-280) * 100;
+  int battPercent = (battVolt-282) / (296-282) * 100;
   battPercent = constrain(battPercent, 0, 99);
   char c_battPercent[9];
   ("  " + String(battPercent) + "%   ").toCharArray(c_battPercent, 9);
