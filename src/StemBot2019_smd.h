@@ -551,11 +551,13 @@ void bot_setup(int calibrate_time, int manual_value) {
     u8x8.drawString(0, 4, " PLEASE ");
     u8x8.drawString(0, 6, " CHANGE ");
 #endif
-    while (1) {
-      LED(1, 0, 0);
-      delay(100);
-      LED(0, 0, 0);
-      delay(150);
+    if (battPercent < 10) {
+      while (1) {
+        LED(1, 0, 0);
+        delay(100);
+        LED(0, 0, 0);
+        delay(150);
+      }
     }
   }
   delay(1000);
