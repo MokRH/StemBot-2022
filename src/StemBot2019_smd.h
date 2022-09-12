@@ -249,11 +249,12 @@ void followLine(int speedL, int speedR) {
   //LED(0, 1, 0);
 }
 
+
 void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action, int delay_b4_turn, int turn_speed, int turn_duration, int line, int offsetIR) {
   out_min = -speed_M;
   out_max = speed_M;
-  int countIgnore = 0;
-  do {
+  word t_enter = millis();
+  while(1) {
     update_sensor(line, offsetIR);
     if ( (IRval & 0b00011111) != 0b00000000 ) { // robot is ON line
 	trackLine:
@@ -261,133 +262,25 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
       followLine(speed_M, speed_M);
 	  
 	  // Left junction 
-      if ( (IRval & 0b00010111) == 0b00010100 )  { // Left junction 	  
-        if (TYPE == 1 && action == 11 ) { // Left junction, turn left
-		LED(0, 0, 1);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnLeft(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint - 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 1 && action == 22 ) { // left junction, turn right
-		LED(1, 0, 0);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnRight(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint + 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 1 && action == 33 ) { // left junction, ignore
-		LED(1, 1, 1);
-		followLine(speed_M, speed_M);
-          while ( (IRval & 0b00010111) == 0b00010100 ) {
-            update_sensor(line, offsetIR);            
-          }
-          break;
-        }
+      if ( (IRval & 0b00010111) == 0b00010100 && TYPE == 1)  { // Left junction 
+        delay(delay_b4_turn);	  
+		break;
       }
-      
-	  // Middle junction 
-	//else if ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) { // Middle junction
-	else if ( (IRval & 0b00010101) == 0b00010101 ) {
-        if (TYPE == 3 && action == 11 ) { // Middle junction, turn left
-		LED(0, 0, 1);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnLeft(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint - 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 3 && action == 22 ) { // Middle junction, turn right
-		LED(1, 0, 0);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnRight(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint + 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 3 && action == 33 ) { // Middle junction, ignore
-		LED(1, 1, 1);
-		followLine(speed_M, speed_M);
-          //while ( (IRval & 0b00010010) == 0b00010010 || (IRval & 0b00010001) == 0b00010001 || (IRval & 0b00001001) == 0b00001001 ) {
-          while ( (IRval & 0b00010101) == 0b00010101 ){
-			update_sensor(line, offsetIR);
-          }
-          break;
-        }
+      // Middle junction 
+	  else if ( (IRval & 0b00010001) == 0b00010001 && TYPE == 3) {
+		 delay(delay_b4_turn);
+        break;
       }
-
       // Right junction
-      else if ( (IRval & 0b00011101) == 0b00000101 )  { // Right junction
-        if (TYPE == 2 && action == 11) { // Right junction, turn left
-		LED(0, 0, 1);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnLeft(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint - 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 2 && action == 22 ) { // Right junction, turn right
-		LED(1, 0, 0);
-		  forward(speed_M, speed_M);
-          delay(delay_b4_turn);
-          turnRight(turn_speed, turn_speed);
-          delay(turn_duration);
-		  IR_position = setPoint + 100;
-		  LED(0, 0, 0);
-		  break;
-        }
-        else if (TYPE == 2 && action == 33 ) { // Right junction, ignore
-		LED(1, 1, 1);
-		followLine(speed_M, speed_M);
-          while ( (IRval & 0b00011101) == 0b00000101 ) {
-            update_sensor(line, offsetIR);
-          }
-          break;
-        }
+      else if ( (IRval & 0b00010101) == 0b00000101 && TYPE == 2)  { // Right junction
+	     delay(delay_b4_turn);
+        break;
       }
 
-      else if (TYPE == 0 && action == 11) { // dont care, turn left
-        if (countIgnore == delay_b4_turn) {
-		LED(0, 0, 1);
-          turnLeft(turn_speed, turn_speed);
-          delay(turn_duration);
-          IR_position = setPoint - 100;
-		  LED(0, 0, 0);
+      else if (TYPE == 0 && delay_b4_turn != -1) { // dont care, turn right
+	    if ((millis()-t_enter) >= delay_b4_turn) {
           break;
         }
-        countIgnore += 1;
-      }
-      else if (TYPE == 0 && action == 22) { // dont care, turn right
-        if (countIgnore == delay_b4_turn) {
-		LED(1, 0, 0);
-          turnRight(turn_speed, turn_speed);
-          delay(turn_duration);
-          IR_position = setPoint + 100;
-		  LED(0, 0, 0);
-          break;
-        }
-        countIgnore += 1;
-      }
-      else if (TYPE == 0 && action == 33 && delay_b4_turn != -1) { // dont care, ignore
-        countIgnore += 1;
-		if (countIgnore == delay_b4_turn) {
-          break;
-        }
-      }
-      else if (TYPE == 4 && action == 33 && delay_b4_turn == -1) { // dont care, loop forever
-        // loop forever
       }
     }
     else { // robot is OFF line (trace back)
@@ -420,7 +313,24 @@ void junction(int speed_M, int trace_back, int trace_delay, int TYPE, int action
       }
     }
   }
-  while (1);
+  
+  if (action == 11) {//turn left
+	LED(0, 0, 1);	
+    turnLeft(turn_speed, turn_speed);
+	IR_position = setPoint - 100;
+	LED(0, 0, 0);
+  }
+  else if (action == 22) { //turn right
+	LED(1, 0, 0);
+    turnRight(turn_speed, turn_speed);
+	IR_position = setPoint + 100;
+	LED(0, 0, 0);
+  }
+  else if (action == 33  && TYPE != 0) { //ignore
+	LED(1, 1, 1);
+	followLine(speed_M, speed_M);    
+  }
+  delay(turn_duration);
 }
 
 void obstacle(int speed_M, int trace_back, unsigned int distance, int action, int delay_b4_turn, int turn_speed, int turn_duration, int line, int offsetIR) {
